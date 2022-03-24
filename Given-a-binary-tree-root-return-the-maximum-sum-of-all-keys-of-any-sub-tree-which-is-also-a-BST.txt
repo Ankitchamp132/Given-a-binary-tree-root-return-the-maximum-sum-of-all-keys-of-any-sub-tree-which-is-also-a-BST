@@ -1,0 +1,66 @@
+int mini=INT_MIN;
+    int add(TreeNode *root){
+        if(root==NULL){
+            return 0;
+        }
+        return add(root->left)+add(root->right)+root->val;
+    }
+    int maxvalue(TreeNode* root){
+        if(root==NULL){
+            return INT_MIN;
+        }
+        int res=root->val;
+        int lres=maxvalue(root->left);
+        int rres=maxvalue(root->right);
+        if(lres>res){
+            res=lres;
+        }
+        if(rres>res){
+            res=rres;
+        }
+        return res;
+    }
+    int minvalue(TreeNode* root){
+        if(root==NULL){
+            return INT_MAX;
+        }
+        int res=root->val;
+        int lres=minvalue(root->left);
+        int rres=minvalue(root->right);
+        if(lres<res){
+            res=lres;
+        }
+        if(rres<res){
+            res=rres;
+        }
+        return res;
+    }
+    bool isBST(TreeNode* root){
+        if(root==NULL){
+            return true;
+        }
+        if(root->left!=NULL && maxvalue(root->left)>root->val){
+            return false;
+        }
+        if(root->right!=NULL && minvalue(root->right)<root->val){
+            return false;
+        }
+        if(!isBST(root->left)|| !isBST(root->right)){
+            return false;
+        }
+        return true;
+    }
+    int maxSumBST(TreeNode* root) {
+        if(root==NULL){
+            return 0;
+        }
+        if(isBST(root)){
+            int valu=root->val+add(root->left)+add(root->right);
+            mini=max(mini,valu);
+            maxSumBST(root->left);
+            maxSumBST(root->right);
+        }
+        maxSumBST(root->left);
+        maxSumBST(root->right);
+        return mini;
+    }
